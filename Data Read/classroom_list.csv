@@ -1,5 +1,5 @@
-ClassIDs
-101
-102
-103
-104
+Class Name, Class ID, Camera ID, Thermal ID
+Math,101,1,0x0a
+English,102,1,0x0a
+Science,103,1,0x0a
+English,104,1,0x0a
