@@ -23,7 +23,7 @@ class classroom:
     
 	
 	
-if __name__ == '__main__':
+def DataRead():
 	student_list = []
 	classroom_list = []
 	attendance_record = []
