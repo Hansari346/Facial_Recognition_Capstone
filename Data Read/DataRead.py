@@ -1,24 +1,7 @@
 import csv
-
-class student:
-    def __init__(self, student_name, student_id, anchor_images, attendance_record, class_schedule):
-        self.name = student_name
-        self.ID = student_id
-        self.anchors = anchor_images
-        self.att = attendance_record
-        self.sched = class_schedule
-    def __str__(self):
-        return "Name: %s, ID: %s Class Schedule: %s" % (self.name, self.ID, self.sched)
-class classroom:
-    def __init__(self, class_name, class_id, classroom_weight, camera_ID, thermal_ID, class_students):
-        self.name = class_name
-        self.ID = class_id        
-        self.weight = classroom_weight 
-        self.students = class_students
-        self.cameraID = camera_ID
-        self.thermalID = thermal_ID
-    def __str__(self):
-        return "Name: %s, ID: %s Class Camera ID: %s Thermal ID: %s" % (self.name, self.ID, self.cameraID, self.thermalID)        
+import datetime
+from datetime import date, timedelta
+import structs  
 		
     
 	
@@ -26,7 +9,17 @@ class classroom:
 def DataRead():
 	student_list = []
 	classroom_list = []
-	attendance_record = []
+	dates_of_year = []
+	sdate = date(2019, 1, 1)   # start date
+	edate = date(2019, 12, 31)   # end date
+	period = [None] * 6
+	delta = edate - sdate       # as timedelta
+
+	for i in range(delta.days + 1):
+		day = sdate + timedelta(days=i)
+		dates_of_year.append(day)		
+	attendance_record = dict.fromkeys(dates_of_year, period)
+	
 	#read student data in from csv file
 	with open('student_list.csv', newline='') as csv_file:
 		reader = csv.reader(csv_file)
@@ -37,7 +30,8 @@ def DataRead():
 			class_schedule = [sched1,sched2,sched3,sched4,sched5,sched6]
 			anchor_images = [profile_picture]
 			# Create the student instance and append it to the list.
-			student_list.append(student(student_name, student_id, anchor_images, attendance_record, class_schedule))
+			# Create the student instance and append it to the list.
+			student_list.append(structs.student(student_name, student_id, anchor_images, attendance_record, class_schedule))
 	#read classroom data from csv file
 	with open('classroom_list.csv', newline='') as csv_file:
 		reader = csv.reader(csv_file)
@@ -48,7 +42,7 @@ def DataRead():
 			students = []
 			weight = '0'
 			# Create the classroom instance and append it to the list.
-			classroom_list.append(classroom(class_name, class_id, weight,  camera_ID, thermal_ID, students))
+			classroom_list.append(structs.classroom(class_name, class_id, weight,  camera_ID, thermal_ID, students))
 	#Loop through students and place them in classrooms
 	for classroom in classroom_list:
 		print(classroom)
@@ -57,3 +51,4 @@ def DataRead():
 				if (student.sched[i] == classroom.ID):
 					classroom.students.append(student)
 					print(student)
+
